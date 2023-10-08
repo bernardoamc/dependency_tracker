@@ -43,11 +43,6 @@ defmodule DependencyTracker.GemfileLock do
     end
   end
 
-  # Given a GemfileLock struct, returns a Map with all the remotes within it.
-  def remotes(%__MODULE__{remotes: remotes}) do
-    Map.values(remotes)
-  end
-
   # Retuns a list of all the remote URLs within a GemfileLock struct.
   def remote_urls(%__MODULE__{remotes: remotes}) do
     Map.keys(remotes)
@@ -60,17 +55,6 @@ defmodule DependencyTracker.GemfileLock do
   def gems(%__MODULE__{remotes: remotes}, remote_url) do
     case Map.fetch(remotes, remote_url) do
       {:ok, remote} -> {:ok, Remote.gems(remote)}
-      :error -> {:error, :remote_not_found}
-    end
-  end
-
-  # Given a GemfileLock struct, a remote URL and a gem, finds whether the gem
-  # exists in the remote. If the remote doesn't exist, it returns {:error, :remote_not_found}.
-  #
-  # Returns {:ok, boolean} or {:error, :remote_not_found}
-  def has_gem?(%__MODULE__{remotes: remotes}, remote_url, gem) do
-    case Map.fetch(remotes, remote_url) do
-      {:ok, remote} -> {:ok, Remote.has_gem?(remote, gem)}
       :error -> {:error, :remote_not_found}
     end
   end
