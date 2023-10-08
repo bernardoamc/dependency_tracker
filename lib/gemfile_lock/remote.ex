@@ -1,5 +1,5 @@
 defmodule DependencyTracker.GemfileLock.Remote do
-  defstruct [:type, :url, :dependencies, branch: "", revision: "", ref: "", submodules: false]
+  defstruct [:type, :url, :dependencies, branch: "", revision: "", ref: "", tag: "", submodules: false]
 
   # Given a map with our struct fields, return a struct.
   def new(remote) do
