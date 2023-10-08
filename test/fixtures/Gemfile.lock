@@ -9,6 +9,13 @@ GIT
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
 
+GIT
+  remote: https://github.com/Shopacmeify/dl-queue.git
+  revision: d5a3fd283cc43745213799637afb837582455d6a
+  branch: anonymous/instrument-redis
+  specs:
+    dl-queue (0.34.0)
+
 GEM
   remote: https://acme.io/basic/gems/ruby/
   specs:

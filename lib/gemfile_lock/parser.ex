@@ -82,12 +82,18 @@ defmodule DependencyTracker.GemfileLock.Parser do
     |> unwrap_and_tag(:ref)
     |> ignore(eol)
 
+  branch =
+    ignore(string("  branch: "))
+    |> concat(line)
+    |> unwrap_and_tag(:branch)
+    |> ignore(eol)
+
   git_block =
     ignore(string("GIT"))
     |> ignore(eol)
     |> concat(remote)
     |> concat(revision)
-    |> concat(ref)
+    |> concat(choice([ref, branch]))
     |> concat(specs)
     |> reduce({:aggregate_remote, [{:type, :git}]})
 
