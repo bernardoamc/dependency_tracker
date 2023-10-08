@@ -3,26 +3,34 @@
 This is a small projec that aims to parse a Gemfile.lock and associate
 dependencies with a remote.
 
-## Usage
+## Setup
 
 1. Clone this repository
 2. Run `mix deps.get` in order to install dependencies
-3. Test with `iex -S mix`
 
-## Installation
+## Usage
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `dependency_tracker` to your list of dependencies in `mix.exs`:
+1. Run `iex -S mix`
+
+Now we can play with the application. The main module is `DependencyTracker`.
 
 ```elixir
-def deps do
-  [
-    {:dependency_tracker, "~> 0.1.0"}
-  ]
-end
+iex(1)> {:ok, gemfile_lock} = DependencyTracker.GemfileLock.parse("test/fixtures/Gemfile.lock")
+{:ok, %DependencyTracker.GemfileLock{
+  #...
+}}
+
+iex(2)> specification = DependencyTracker.Specification.new(["aasm"], "https://acme.io/basic/gems/ruby/")
+%DependencyTracker.Specification{
+  rules: %{"aasm" => "https://acme.io/basic/gems/ruby/"}
+}
+
+iex(3)> DependencyTracker.issues(specification, gemfile_lock)
+[
+  %{
+    specification_url: "https://acme.io/basic/gems/ruby/",
+    dependency: "aasm",
+    gemfile_lock_url: "https://rubygems.org/"
+  }
+]
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/dependency_tracker>.
-
