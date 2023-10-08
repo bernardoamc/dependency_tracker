@@ -21,13 +21,14 @@ defmodule DependencyTracker do
   When no issues are detected, an empty list is returned.
 
   ## Examples
-
+      iex> {:ok, gemfile_lock} = DependencyTracker.GemfileLock.parse("test/fixtures/ruby/Gemfile.lock")
+      iex> specification = DependencyTracker.Specification.new(["aasm"], "https://acme.io/basic/gems/ruby/")
       iex> DependencyTracker.issues(specification, gemfile_lock)
       [
         %{
-          dependency: "concurrent-ruby",
-          gemfile_lock_url: "https://rubygems.org/",
-          specification_url: "https://acme.io/basic/gems/ruby/"
+          specification_url: "https://acme.io/basic/gems/ruby/",
+          dependency: "aasm",
+          gemfile_lock_url: "https://rubygems.org/"
         }
       ]
   """

@@ -1,6 +1,11 @@
 defmodule DependencyTracker.Specification do
   defstruct [rules: %{}]
 
+  # Creates a new Specification struct with an empty map of dependencies.
+  def new() do
+    %__MODULE__{}
+  end
+
   # Creates a new Specification struct from a remote URL and a List of
   # dependencies. The dependencies are stored in a map with the dependency
   # name as the key and the remote URL as the value.
