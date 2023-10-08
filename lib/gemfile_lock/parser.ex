@@ -21,7 +21,24 @@ defmodule DependencyTracker.GemfileLock.Parser do
   def aggregate_gem([gem | dependencies]), do: %{gem: gem, dependencies: dependencies}
 
   # Aggregate the remote URL and its dependencies into a map.
-  def aggregate_remote(result, type), do: Enum.into([type | result], %{})
+  def aggregate_remote(result, type) do
+    Enum.into([type | result], %{})
+    |> Map.update(:submodules, false, &(&1 == "true"))
+    |> Map.update(:dependencies, [], &parse_dependencies(&1))
+  end
+
+  # Given a list of dependencies from our Parser, returns a Map containing
+  # the gem name as the key and a map with the version and subdependencies
+  # as the value.
+  #
+  # Returns a Map with the format %{name: %{version: version, dependencies: dependencies}, ...}
+  defp parse_dependencies(dependencies) do
+    dependencies
+    |> Enum.reduce(%{}, fn dependency, acc ->
+      %{name: name, version: version} = dependency[:gem]
+      Map.put(acc, name, %{version: version, dependencies: dependency[:dependencies]})
+    end)
+  end
 
   #############################################################################
   # GEM Block Parser
