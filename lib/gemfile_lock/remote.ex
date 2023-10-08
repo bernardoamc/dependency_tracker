@@ -1,12 +1,13 @@
 defmodule DependencyTracker.GemfileLock.Remote do
-  defstruct [:remote, :dependencies]
+  defstruct [:url, :dependencies, revision: "", ref: ""]
 
-  def new(%{url: url, dependencies: dependencies}) do
-    %__MODULE__{remote: url, dependencies: dependencies}
+  # Given a map with our struct fields, return a struct.
+  def new(map) do
+    struct(__MODULE__, map)
   end
 
   # Fetch the remote URL
-  def url(%__MODULE__{remote: url}) do
+  def url(%__MODULE__{url: url}) do
     url
   end
 

@@ -28,6 +28,7 @@ defmodule DependencyTracker.GemfileLock do
       {:ok, contents} ->
         contents
         |> String.split("\n\n")
+        |> Enum.filter(fn block -> valid_block?(block) end)
         |> Enum.reduce({:ok, %__MODULE__{remotes: []}}, fn block, {:ok, gemfile_lock} ->
           case parse_block(block) do
             {:ok, new_block} -> {:ok, merge(new_block, gemfile_lock)}
@@ -55,6 +56,12 @@ defmodule DependencyTracker.GemfileLock do
       nil -> {:error, :not_found}
       remote -> {:ok, Remote.gems(remote)}
     end
+  end
+
+  # Given a block of text, returns true when a block start with GEM or GIT
+  # and false otherwise.
+  defp valid_block?(block) do
+    String.starts_with?(block, "GEM") or String.starts_with?(block, "GIT")
   end
 
   # Given two GemfileLock structs, merge them together assuming they are

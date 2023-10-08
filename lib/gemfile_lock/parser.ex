@@ -3,7 +3,7 @@ defmodule DependencyTracker.GemfileLock.Parser do
 
   import NimbleParsec
 
-  remote_url = utf8_string([not: ?\n, not: ?\r], min: 1)
+  line = utf8_string([not: ?\n, not: ?\r], min: 1)
   gem_name = utf8_string([not: ?\s], min: 1)
   gem_version = utf8_string([not: ?)], min: 1)
   eol = choice([string("\r\n"), string("\n")])
@@ -45,7 +45,7 @@ defmodule DependencyTracker.GemfileLock.Parser do
 
   remote =
     ignore(string("  remote: "))
-    |> concat(remote_url)
+    |> concat(line)
     |> unwrap_and_tag(:url)
     |> ignore(eol)
 
@@ -70,5 +70,26 @@ defmodule DependencyTracker.GemfileLock.Parser do
   # GIT Block Parser
   #############################################################################
 
-  defparsec(:parse, gem_block)
+  revision =
+    ignore(string("  revision: "))
+    |> concat(line)
+    |> unwrap_and_tag(:revision)
+    |> ignore(eol)
+
+  ref =
+    ignore(string("  ref: "))
+    |> concat(line)
+    |> unwrap_and_tag(:ref)
+    |> ignore(eol)
+
+  git_block =
+    ignore(string("GIT"))
+    |> ignore(eol)
+    |> concat(remote)
+    |> concat(revision)
+    |> concat(ref)
+    |> concat(specs)
+    |> reduce({:aggregate_remote, []})
+
+  defparsec(:parse, choice([gem_block, git_block]))
 end
