@@ -1,0 +1,70 @@
+GIT
+  remote: https://github.com/acme/ferrum
+  revision: ad5e714be9b0d8d9d9a9782782f7dbc733cf5e93
+  ref: ad5e714be9b0d8d9d9a9782782f7dbc733cf5e93
+  specs:
+    ferrum (0.13)
+      addressable (~> 2.5)
+      concurrent-ruby (~> 1.1)
+      webrick (~> 1.7)
+      websocket-driver (>= 0.6, < 0.8)
+
+GEM
+  remote: https://acme.io/basic/gems/ruby/
+  specs:
+    cusco (1.9.5)
+      activesupport (>= 6.0)
+      connection_pool (>= 2.2.3, < 3)
+      ejson (~> 1.2)
+      graphql (>= 1.10)
+      graphql-client (~> 0.18)
+      jwt (~> 2.1)
+      octokit (~> 5.6)
+      opentelemetry-api (>= 1.0)
+      semian (>= 0.8.6)
+      statsd-instrument (>= 2.9, < 4.0)
+    kafka-client-ruby (2.16.9)
+      activesupport (>= 5.1)
+      avro_turf (>= 1.3.1, < 1.9.0)
+      bugsnag (>= 5.5, < 7.0)
+      concurrent-ruby (~> 1.0)
+      dnsruby (~> 1.61, >= 1.61.3)
+      ruby-kafka (>= 1.2, < 1.6)
+      snappy (>= 0.0.17, < 0.4.0)
+      sorbet-runtime (~> 0.5.0)
+      statsd-instrument (>= 2.3.0, < 4)
+      zstd-ruby (>= 1.5.0.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    aasm (5.5.0)
+      concurrent-ruby (~> 1.0)
+    actioncable (7.0.7.2)
+      actionpack (= 7.0.7.2)
+      activesupport (= 7.0.7.2)
+      nio4r (~> 2.0)
+      websocket-driver (>= 0.6.1)
+    actionmailbox (7.0.7.2)
+      actionpack (= 7.0.7.2)
+      activejob (= 7.0.7.2)
+      activerecord (= 7.0.7.2)
+      activestorage (= 7.0.7.2)
+      activesupport (= 7.0.7.2)
+      mail (>= 2.7.1)
+      net-imap
+      net-pop
+      net-smtp
+
+PLATFORMS
+  arm64-darwin
+  arm64-darwin-21
+  x86_64-linux
+
+DEPENDENCIES
+  aasm
+  activeresource
+  better_html
+
+BUNDLED WITH
+   2.4.7
