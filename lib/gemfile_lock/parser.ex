@@ -21,7 +21,7 @@ defmodule DependencyTracker.GemfileLock.Parser do
   def aggregate_gem([gem | dependencies]), do: %{gem: gem, dependencies: dependencies}
 
   # Aggregate the remote URL and its dependencies into a map.
-  def aggregate_remote(result), do: Enum.into(result, %{})
+  def aggregate_remote(result, type), do: Enum.into([type | result], %{})
 
   #############################################################################
   # GEM Block Parser
@@ -64,7 +64,7 @@ defmodule DependencyTracker.GemfileLock.Parser do
     |> ignore(eol)
     |> concat(remote)
     |> concat(specs)
-    |> reduce({:aggregate_remote, []})
+    |> reduce({:aggregate_remote, [{:type, :gem}]})
 
   #############################################################################
   # GIT Block Parser
@@ -89,7 +89,7 @@ defmodule DependencyTracker.GemfileLock.Parser do
     |> concat(revision)
     |> concat(ref)
     |> concat(specs)
-    |> reduce({:aggregate_remote, []})
+    |> reduce({:aggregate_remote, [{:type, :git}]})
 
   defparsec(:parse, choice([gem_block, git_block]))
 end
