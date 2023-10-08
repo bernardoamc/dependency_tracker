@@ -43,8 +43,13 @@ defmodule DependencyTracker.GemfileLock do
     end
   end
 
-  # Given a GemfileLock struct, returns a list of all the remotes within it.
+  # Given a GemfileLock struct, returns a Map with all the remotes within it.
   def remotes(%__MODULE__{remotes: remotes}) do
+    Map.values(remotes)
+  end
+
+  # Retuns a list of all the remote URLs within a GemfileLock struct.
+  def remote_urls(%__MODULE__{remotes: remotes}) do
     Map.keys(remotes)
   end
 
