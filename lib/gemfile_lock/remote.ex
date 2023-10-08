@@ -1,9 +1,11 @@
 defmodule DependencyTracker.GemfileLock.Remote do
-  defstruct [:type, :url, :dependencies, branch: "", revision: "", ref: ""]
+  defstruct [:type, :url, :dependencies, branch: "", revision: "", ref: "", submodules: false]
 
   # Given a map with our struct fields, return a struct.
-  def new(map) do
-    struct(__MODULE__, map)
+  def new(remote) do
+    # Convert submodules to a boolean
+    remote = Map.update(remote, :submodules, false, &(&1 == "true"))
+    struct(__MODULE__, remote)
   end
 
   # Fetch the remote URL
