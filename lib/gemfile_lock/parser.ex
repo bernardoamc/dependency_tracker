@@ -94,6 +94,12 @@ defmodule DependencyTracker.GemfileLock.Parser do
     |> unwrap_and_tag(:tag)
     |> ignore(eol)
 
+  glob =
+    ignore(string("  glob: "))
+    |> concat(line)
+    |> unwrap_and_tag(:glob)
+    |> ignore(eol)
+
   submodules =
     ignore(string("  submodules: "))
     |> concat(line)
@@ -105,8 +111,9 @@ defmodule DependencyTracker.GemfileLock.Parser do
     |> ignore(eol)
     |> concat(remote)
     |> concat(revision)
-    |> concat(choice([ref, branch, tag]))
+    |> concat(optional(choice([ref, branch, tag])))
     |> concat(optional(submodules))
+    |> concat(optional(glob))
     |> concat(specs)
     |> reduce({:aggregate_remote, [{:type, :git}]})
 

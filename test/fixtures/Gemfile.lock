@@ -33,6 +33,21 @@ GIT
     httparty (0.13.5)
       multi_xml (>= 0.5.2)
 
+GIT
+  remote: https://github.com/acme/markdown.git
+  revision: 1f9cd19d5001cf7ed07be5c6e4386c0ca096703c
+  branch: main
+  glob: gems/markdown_extensions/markdown_extensions.gemspec
+  specs:
+    markdown_extensions (0.1.0)
+      markdown (>= 5.4.0)
+
+GIT
+  remote: https://github.com/maljub01/RTLize.git
+  revision: 12ebf061fab2322e4a1e1dd08420492080011265
+  specs:
+    rtlize (0.2.1)
+
 GEM
   remote: https://acme.io/basic/gems/ruby/
   specs:
