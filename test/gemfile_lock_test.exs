@@ -93,7 +93,7 @@ defmodule DependencyTracker.GemfileLockTest do
         },
       }}
 
-    expected_remotes = Enum.sort(["https://rubygems.org/", "https://acme.io/basic/gems/ruby/"])
+    expected_remotes = ["https://acme.io/basic/gems/ruby/", "https://rubygems.org/"]
 
     assert Enum.sort(GemfileLock.remote_urls(gemfile_lock)) == expected_remotes
   end
