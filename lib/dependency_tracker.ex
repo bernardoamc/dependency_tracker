@@ -3,7 +3,9 @@ defmodule DependencyTracker do
   alias DependencyTracker.Ruby.PackageDefinition
 
   @moduledoc """
-  Documentation for `DependencyTracker`.
+  This module is the entry point to the application. It provides a single function
+  that takes a Specification struct and a PackageDefinition struct and returns a list
+  of issues detected in the PackageDefinition struct given the Specification struct.
   """
 
   @doc """
@@ -18,7 +20,7 @@ defmodule DependencyTracker do
   the URL of the dependency in the PackageDefinition struct and the URL of the
   dependency in the Specification struct.
 
-  When no issues are detected, an empty list is returned.
+  Returns a list of issues or an empty list.
 
   ## Examples
       iex> {:ok, package_definition} = DependencyTracker.Ruby.PackageDefinition.parse("test/fixtures/ruby/Gemfile.lock")

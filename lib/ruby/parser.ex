@@ -1,5 +1,7 @@
 defmodule DependencyTracker.Ruby.Parser do
-  @moduledoc false
+  @moduledoc """
+  Module responsible for parsing GEM and GIT blocks from a String.
+  """
 
   import NimbleParsec
 
