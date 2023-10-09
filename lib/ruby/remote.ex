@@ -1,4 +1,4 @@
-defmodule DependencyTracker.GemfileLock.Remote do
+defmodule DependencyTracker.Ruby.Remote do
   defstruct [:type, :url, :dependencies, branch: "", revision: "", ref: "", tag: "", glob: "", submodules: false]
 
   # Given a map with our struct fields, return a struct.

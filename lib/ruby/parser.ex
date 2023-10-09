@@ -1,4 +1,4 @@
-defmodule DependencyTracker.GemfileLock.Parser do
+defmodule DependencyTracker.Ruby.Parser do
   @moduledoc false
 
   import NimbleParsec

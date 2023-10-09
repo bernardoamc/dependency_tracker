@@ -1,41 +1,41 @@
 defmodule DependencyTracker do
   alias DependencyTracker.Specification
-  alias DependencyTracker.GemfileLock
+  alias DependencyTracker.Ruby.PackageDefinition
 
   @moduledoc """
   Documentation for `DependencyTracker`.
   """
 
   @doc """
-  Given a Specification struct and a GemfileLock struct, returns a list of
+  Given a Specification struct and a PackageDefinition struct, returns a list of
   issues. An issue is detected when the remote URL of a dependency in the Specification
-  struct does not match the URL of the same dependency in the GemfileLock struct.
+  struct does not match the URL of the same dependency in the PackageDefinition struct.
 
   If the remote URL of a dependency in the Specification struct does not exist in
-  the GemfileLock struct, it is ignored.
+  the PackageDefinition struct, it is ignored.
 
   When an issue is detected, a map is returned containing the dependency name,
-  the URL of the dependency in the GemfileLock struct and the URL of the
+  the URL of the dependency in the PackageDefinition struct and the URL of the
   dependency in the Specification struct.
 
   When no issues are detected, an empty list is returned.
 
   ## Examples
-      iex> {:ok, gemfile_lock} = DependencyTracker.GemfileLock.parse("test/fixtures/ruby/Gemfile.lock")
+      iex> {:ok, package_definition} = DependencyTracker.Ruby.PackageDefinition.parse("test/fixtures/ruby/Gemfile.lock")
       iex> specification = DependencyTracker.Specification.new(["aasm"], "https://acme.io/basic/gems/ruby/")
-      iex> DependencyTracker.issues(specification, gemfile_lock)
+      iex> DependencyTracker.issues(specification, package_definition)
       [
         %{
           specification_url: "https://acme.io/basic/gems/ruby/",
           dependency: "aasm",
-          gemfile_lock_url: "https://rubygems.org/"
+          package_definition_url: "https://rubygems.org/"
         }
       ]
   """
-  def issues(specification, gemfile_lock) do
-    GemfileLock.remote_urls(gemfile_lock)
+  def issues(specification, package_definition) do
+    PackageDefinition.remote_urls(package_definition)
     |> Enum.reduce([], fn remote_url, acc ->
-      {:ok, gems} = GemfileLock.gems(gemfile_lock, remote_url)
+      {:ok, gems} = PackageDefinition.gems(package_definition, remote_url)
 
       Enum.reduce(gems, acc, fn gem, acc ->
         case Specification.valid_dependency?(specification, gem, remote_url) do
@@ -49,7 +49,7 @@ defmodule DependencyTracker do
   defp create_issue(gem, remote_url, specification_url) do
     %{
       dependency: gem,
-      gemfile_lock_url: remote_url,
+      package_definition_url: remote_url,
       specification_url: specification_url
     }
   end

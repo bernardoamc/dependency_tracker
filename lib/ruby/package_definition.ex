@@ -1,21 +1,21 @@
-defmodule DependencyTracker.GemfileLock do
-  alias DependencyTracker.GemfileLock.Parser
-  alias DependencyTracker.GemfileLock.Remote
+defmodule DependencyTracker.Ruby.PackageDefinition do
+  alias DependencyTracker.Ruby.Parser
+  alias DependencyTracker.Ruby.Remote
 
   defstruct [remotes: %{}]
 
-  # Returns a default GemfileLock struct.
+  # Returns a default PackageDefinition struct.
   def new() do
     struct(__MODULE__)
   end
 
-  # Given a Gemfile.lock block, parses it and returns a new GemfileLock struct.
+  # Given a Gemfile.lock block, parses it and returns a new PackageDefinition struct.
   # It achieves this by parsing the block using NimbleParsec and then reducing
-  # the result into a struct containing a map of remote URL as keys and GemfileLock.Remote
+  # the result into a struct containing a map of remote URL as keys and PackageDefinition.Remote
   # structs as values. It is assumed that remote URLs are unique and won't need
   # to be deduplicated.
   #
-  # Returns {:ok, GemfileLock} or {:error, reason}
+  # Returns {:ok, PackageDefinition} or {:error, reason}
   def parse_block(block) do
     case Parser.parse(block) do
       {:ok, [remote], "", _, _, _} -> {:ok, %__MODULE__{remotes: %{ remote.url => Remote.new(remote)}}}
@@ -23,37 +23,37 @@ defmodule DependencyTracker.GemfileLock do
     end
   end
 
-  # Given the Gemfile.lock path, reads the file and returns a new GemfileLock
+  # Given the Gemfile.lock path, reads the file and returns a new PackageDefinition
   # struct. It achieves this by splitting the file into blocks split on empty
   # lines and passing each block to the new/1 function. It then proceeds to
-  # print any errors that occur within a block and only returns the GemfileLock
+  # print any errors that occur within a block and only returns the PackageDefinition
   # struct with the successful blocks.
   #
-  # Returns {:ok, GemfileLock} or {:error, reason}
+  # Returns {:ok, PackageDefinition} or {:error, reason}
   def parse(path) do
     case File.read(path) do
       {:ok, contents} ->
         contents
         |> String.split("\n\n")
         |> Enum.filter(fn block -> valid_block?(block) end)
-        |> Enum.reduce({:ok, %__MODULE__{remotes: %{}}}, fn block, {:ok, gemfile_lock} ->
+        |> Enum.reduce({:ok, %__MODULE__{remotes: %{}}}, fn block, {:ok, package_definition} ->
           case parse_block(block) do
-            {:ok, new_block} -> {:ok, merge(new_block, gemfile_lock)}
+            {:ok, new_block} -> {:ok, merge(new_block, package_definition)}
             {:error, reason} ->
               IO.puts("Error parsing Gemfile.lock block: #{reason}")
-              {:ok, gemfile_lock}
+              {:ok, package_definition}
           end
         end)
       {:error, reason} -> {:error, reason}
     end
   end
 
-  # Retuns a list of all the remote URLs within a GemfileLock struct.
+  # Retuns a list of all the remote URLs within a PackageDefinition struct.
   def remote_urls(%__MODULE__{remotes: remotes}) do
     Map.keys(remotes)
   end
 
-  # Given a GemfileLock struct and a remote URL, returns a list of all the gems
+  # Given a PackageDefinition struct and a remote URL, returns a list of all the gems
   # belonging to that remote.
   #
   # Returns {:ok, gems} or {:error, reason}
@@ -70,15 +70,15 @@ defmodule DependencyTracker.GemfileLock do
     String.starts_with?(block, "GEM") or String.starts_with?(block, "GIT")
   end
 
-  # Given two GemfileLock structs with format %{remotes: %{remote_url => remote, ...}},
-  # merges the remotes of both structs into a new GemfileLock struct. It assumes remote_urls
+  # Given two PackageDefinition structs with format %{remotes: %{remote_url => remote, ...}},
+  # merges the remotes of both structs into a new PackageDefinition struct. It assumes remote_urls
   # are unique and won't need to be deduplicated.
   #
   # Example:
   #   merge(%{remotes: %{"https://rubygems.org/" => remote}}, %{remotes: %{"https://npm.org/" => remote}})
   #     => %{remotes: %{"https://rubygems.org/" => remote, "https://npm.org/" => remote}}
   #
-  # Returns GemfileLock
+  # Returns PackageDefinition
   defp merge(%__MODULE__{remotes: remotes1}, %__MODULE__{remotes: remotes2}) do
     %__MODULE__{remotes: Map.merge(remotes1, remotes2)}
   end

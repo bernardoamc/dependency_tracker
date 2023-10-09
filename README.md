@@ -15,8 +15,8 @@ dependencies with a remote.
 Now we can play with the application. The main module is `DependencyTracker`.
 
 ```elixir
-iex(1)> {:ok, gemfile_lock} = DependencyTracker.GemfileLock.parse("test/fixtures/Gemfile.lock")
-{:ok, %DependencyTracker.GemfileLock{
+iex(1)> {:ok, package_definition} = DependencyTracker.Ruby.PackageDefinition.parse("test/fixtures/ruby/Gemfile.lock")
+{:ok, %DependencyTracker.Ruby.PackageDefinition{
   #...
 }}
 
@@ -25,12 +25,12 @@ iex(2)> specification = DependencyTracker.Specification.new(["aasm"], "https://a
   rules: %{"aasm" => "https://acme.io/basic/gems/ruby/"}
 }
 
-iex(3)> DependencyTracker.issues(specification, gemfile_lock)
+iex(3)> DependencyTracker.issues(specification, package_definition)
 [
   %{
     specification_url: "https://acme.io/basic/gems/ruby/",
     dependency: "aasm",
-    gemfile_lock_url: "https://rubygems.org/"
+    package_definition_url: "https://rubygems.org/"
   }
 ]
 ```

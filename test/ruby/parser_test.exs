@@ -1,8 +1,8 @@
-defmodule DependencyTracker.GemfileLock.ParserTest do
+defmodule DependencyTracker.Ruby.ParserTest do
   use ExUnit.Case
-  doctest DependencyTracker.GemfileLock.Parser
+  doctest DependencyTracker.Ruby.Parser
 
-  alias DependencyTracker.GemfileLock.Parser
+  alias DependencyTracker.Ruby.Parser
 
   test "parse parses GEM blocks and returns that block metadata" do
     {:ok, file} = File.read("test/fixtures/ruby/gem/remote.txt")
