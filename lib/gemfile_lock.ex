@@ -2,7 +2,12 @@ defmodule DependencyTracker.GemfileLock do
   alias DependencyTracker.GemfileLock.Parser
   alias DependencyTracker.GemfileLock.Remote
 
-  defstruct [remotes: []]
+  defstruct [remotes: %{}]
+
+  # Returns a default GemfileLock struct.
+  def new() do
+    struct(__MODULE__)
+  end
 
   # Given a Gemfile.lock block, parses it and returns a new GemfileLock struct.
   # It achieves this by parsing the block using NimbleParsec and then reducing
