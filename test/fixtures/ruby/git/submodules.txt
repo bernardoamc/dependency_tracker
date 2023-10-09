@@ -1,0 +1,8 @@
+GIT
+  remote: https://github.com/acme/css.git
+  revision: 54cd0c994cef8a16b432d9e35668f5b2120112a3
+  branch: acme-css-version
+  submodules: true
+  specs:
+    content_script_service (0.1.0)
+      msgpack (~> 1.0)

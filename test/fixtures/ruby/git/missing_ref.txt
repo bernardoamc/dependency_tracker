@@ -1,0 +1,5 @@
+GIT
+  remote: https://github.com/maljub01/RTLize.git
+  revision: 12ebf061fab2322e4a1e1dd08420492080011265
+  specs:
+    rtlize (0.2.1)

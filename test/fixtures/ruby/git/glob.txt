@@ -1,0 +1,8 @@
+GIT
+  remote: https://github.com/acme/markdown.git
+  revision: 1f9cd19d5001cf7ed07be5c6e4386c0ca096703c
+  branch: main
+  glob: gems/markdown_extensions/markdown_extensions.gemspec
+  specs:
+    markdown_extensions (0.1.0)
+      markdown (>= 5.4.0)

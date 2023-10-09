@@ -1,0 +1,6 @@
+GIT
+  remote: https://github.com/acme/dl-queue.git
+  revision: d5a3fd283cc43745213799637afb837582455d6a
+  branch: anonymous/instrument-redis
+  specs:
+    dl-queue (0.34.0)

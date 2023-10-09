@@ -1,0 +1,10 @@
+GIT
+  remote: https://github.com/acme/ferrum
+  revision: ad5e714be9b0d8d9d9a9782782f7dbc733cf5e93
+  ref: ad5e714be9b0d8d9d9a9782782f7dbc733cf5e93
+  specs:
+    ferrum (0.13)
+      addressable (~> 2.5)
+      concurrent-ruby (~> 1.1)
+      webrick (~> 1.7)
+      websocket-driver (>= 0.6, < 0.8)

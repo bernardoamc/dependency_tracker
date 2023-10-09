@@ -1,0 +1,7 @@
+GIT
+  remote: https://github.com/acme/httparty.git
+  revision: f4769dcbd5b74af9565228c034105fc37bf831a7
+  tag: v0.13.5.1
+  specs:
+    httparty (0.13.5)
+      multi_xml (>= 0.5.2)
