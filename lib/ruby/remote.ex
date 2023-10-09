@@ -19,7 +19,7 @@ defmodule DependencyTracker.Ruby.Remote do
 
   Returns a list of gem names.
   """
-  def gems(%__MODULE__{dependencies: dependencies}) do
+  def packages(%__MODULE__{dependencies: dependencies}) do
     Map.keys(dependencies)
   end
 end

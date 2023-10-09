@@ -37,7 +37,7 @@ defmodule DependencyTracker do
   def issues(specification, package_definition) do
     PackageDefinition.remote_urls(package_definition)
     |> Enum.reduce([], fn remote_url, acc ->
-      {:ok, gems} = PackageDefinition.gems(package_definition, remote_url)
+      {:ok, gems} = PackageDefinition.packages(package_definition, remote_url)
 
       Enum.reduce(gems, acc, fn gem, acc ->
         case Specification.valid_dependency?(specification, gem, remote_url) do

@@ -97,7 +97,7 @@ defmodule DependencyTracker.Ruby.PackageDefinitionTest do
     assert Enum.sort(PackageDefinition.remote_urls(package_definition)) == expected_remotes
   end
 
-  test "gems returns a list of gem names belonging to a remote URL" do
+  test "packages returns a list of gem names belonging to a remote URL" do
     package_definition = %PackageDefinition{
       remotes: %{
         "https://rubygems.org/" => %Remote{
@@ -116,10 +116,10 @@ defmodule DependencyTracker.Ruby.PackageDefinitionTest do
         },
       }}
 
-    assert PackageDefinition.gems(package_definition, "https://rubygems.org/") == {:ok, ["aasm"]}
+    assert PackageDefinition.packages(package_definition, "https://rubygems.org/") == {:ok, ["aasm"]}
   end
 
-  test "gems returns an error when remote URL cannot be found" do
-    assert PackageDefinition.gems(PackageDefinition.new(), "https://rubygems.org/") == {:error, :remote_not_found}
+  test "packages returns an error when remote URL cannot be found" do
+    assert PackageDefinition.packages(PackageDefinition.new(), "https://rubygems.org/") == {:error, :remote_not_found}
   end
 end

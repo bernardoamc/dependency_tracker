@@ -80,9 +80,9 @@ defmodule DependencyTracker.Ruby.PackageDefinition do
 
   Returns {:ok, gems} or {:error, reason}
   """
-  def gems(%__MODULE__{remotes: remotes}, remote_url) do
+  def packages(%__MODULE__{remotes: remotes}, remote_url) do
     case Map.fetch(remotes, remote_url) do
-      {:ok, remote} -> {:ok, Remote.gems(remote)}
+      {:ok, remote} -> {:ok, Remote.packages(remote)}
       :error -> {:error, :remote_not_found}
     end
   end

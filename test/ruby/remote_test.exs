@@ -50,6 +50,6 @@ defmodule DependencyTracker.Ruby.RemoteTest do
 
     expected_gems = ["aasm", "cusco"]
 
-    assert Enum.sort(Remote.gems(remote)) == expected_gems
+    assert Enum.sort(Remote.packages(remote)) == expected_gems
   end
 end
