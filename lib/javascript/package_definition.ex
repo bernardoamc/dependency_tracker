@@ -34,9 +34,7 @@ defmodule DependencyTracker.Javascript.PackageDefinition do
       {:ok, [remote], "", _, _, _} ->
         remote = Remote.new(remote)
         {:ok, %__MODULE__{remotes: %{ remote.url => remote }}}
-      {:error, reason, rest, context, line, offset} ->
-        IO.inspect [reason, rest, context, line, offset]
-        IO.inspect block
+      {:error, reason, _rest, _, _, _} ->
         {:error, reason}
     end
   end
@@ -63,6 +61,7 @@ defmodule DependencyTracker.Javascript.PackageDefinition do
           case parse_block(block) do
             {:ok, new_block} -> {:ok, merge(new_block, package_definition)}
             {:error, reason} ->
+              IO.puts("Error parsing yarn.lock block: #{reason}")
               {:ok, package_definition}
           end
         end)

@@ -50,7 +50,6 @@ defmodule DependencyTracker.Javascript.Parser do
   end
 
   line = utf8_string([not: ?\n, not: ?\r], min: 1)
-  attribute = utf8_string([not: ?"], min: 1)
   eol = choice([string("\r\n"), string("\n")])
   subdependency_name = utf8_string([not: ?\s], min: 1)
 
