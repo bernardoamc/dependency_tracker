@@ -8,30 +8,55 @@ defmodule DependencyTracker.Javascript.Parser do
 
   # Define a module for a dependency block
   defmodule Dependency do
-    defstruct name: "", full_name: "", version: "", url: "", integrity: "", dependencies: [], optional_dependencies: []
+    defstruct full_name: "", org: "", name: "", version: "", url: "", integrity: "", dependencies: [], optional_dependencies: []
   end
 
+  # In order to extract a package name from a dependency block
+  # we reverse the String and split it by @ annd making sure
+  # we have at most 3 parts.
+  #
+  # Examples:
+  #   This package has two parts, so it will match our extract_name with an List of 2 elements
+  #   - hello@^1.0.0
+  #    ["0.0.1^", "olleh"]
+  #   - hello
+  #
+  #   This package has three parts, so it will match our extract_name with an List of 3 elements
+  #   ["0.0.7^", "slitu-nigulp-repleh/lebab", ""]
+  #   - @babel/helper-plugin-utils@^7.0.0
+  #   - @babel/helper-plugin-utils
+  #
+  #   This package has three parts, so it will match our extract_name with an List of 3 elements
+  #   [":0.1.1", "snoisnetxe-iu-ssc/emca", ":mpn@1v-snoisnetxe-iu-ssc/emca@"]
+  #   - @acme/css-ui-extensions-v1@npm:@acme/css-ui-extensions@1.1.0:
+  #   - @acme/css-ui-extensions
+  def extract_package_name([_version, name]) do
+    name |> String.reverse()
+  end
+
+  def extract_package_name([_version, name, _alias]) do
+    name = name |> String.reverse()
+    "@" <> name
+  end
+
+  def split_package_namespace(["@" <> org, name]), do: [org, name]
+  def split_package_namespace([name]), do: ["public_npm", name]
+
   def aggregate_package([name, version]) do
-    # Split name by ", " and take the last element
-    # e.g. @babel/helper-plugin-utils, @babel/helper-plugin-utils@^7.0.0
-    name = name |> String.split(", ") |> Enum.take(-1) |> List.first()
+    full_name = name
+      |> String.split(", ")
+      |> Enum.take(-1)
+      |> List.first()
+      |> String.trim("\"")
+      |> String.reverse()
+      |> String.split("@", parts: 3)
+      |> extract_package_name()
 
-    # Strip out the version number from the name
-    # by dropping everything after the last @ taking
-    # into account that a name migjt have multiple @
-    # e.g. @babel/helper-plugin-utils@^7.0.0
-    segments = String.split(name, "@")
+    [org, name] = full_name
+      |> String.split("/", parts: 2)
+      |> split_package_namespace()
 
-    if Enum.count(segments) >= 3 do
-      full_name = segments |> Enum.drop(-1) |>Enum.join("@") |> String.trim("\"")
-      [name] = full_name |> String.split("@") |>Enum.take(-1)
-
-      %{ name: name, full_name: full_name, version: String.trim(version, "\"")}
-    else
-      [name, _] = segments
-
-      %{ name: name, full_name: name, version: String.trim(version, "\"")}
-    end
+    %{ full_name: full_name, org: org, name: name, version: String.trim(version, "\"") }
   end
 
   def aggregate_package_dep([name, version]) do
