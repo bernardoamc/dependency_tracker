@@ -32,7 +32,7 @@ defmodule DependencyTracker.Ruby.RemoteTest do
     assert Remote.new(remote) == expected_remote
   end
 
-  test "gem returns a list of gem names belonging to the remote" do
+  test "paxckages returns a list of gem names belonging to the remote" do
     remote = %Remote{
       type: :gem,
       url: "https://rubygems.org/",

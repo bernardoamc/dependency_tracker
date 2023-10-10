@@ -3,6 +3,8 @@ defmodule DependencyTracker.Ruby.Remote do
 
   @moduledoc """
   Represents a single remote and its dependencies from a Ruby package definition.
+
+  A remote is a source of packages. For example, RubyGems.org is a remote.
   """
 
   @doc """
