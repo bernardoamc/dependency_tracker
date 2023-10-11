@@ -60,7 +60,7 @@ defmodule DependencyTracker.Javascript.Parser do
   end
 
   def aggregate_package_dep([name, version]) do
-    %{ name: String.trim(name, "\""), version: String.trim(version, "\"")}
+    %{ name: String.trim(name, "\""), version: String.replace(version, ~r/["\s]/, "", global: true)}
   end
 
   def aggregate_dependencies(dependencies), do: %{dependencies: dependencies}

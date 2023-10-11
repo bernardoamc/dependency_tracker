@@ -1,0 +1,6 @@
+"@acme/css-extensions-v1@npm:@acme/css-extensions@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@acme/css-extensions/-/css-extensions-1.1.0.tgz#de688427931f36ceaf1f9bb1911cb4cc2de9ec3a"
+  integrity sha512-fBTo7HZPCqWSJ25ttiz+BpCcBHCBy8p/o87No/OSY4j83yA1ayxefud82dlMcoL1gLR1nRDpgvBLHYhEEGPiHg==
+  dependencies:
+    "@css/core" "2.1.x"
