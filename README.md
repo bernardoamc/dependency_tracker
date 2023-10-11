@@ -10,9 +10,21 @@ dependencies with a remote.
 
 ## Usage
 
-1. Run `iex -S mix`
 
-Now we can play with the application. The main module is `DependencyTracker`.
+In order to experiment with the application load it with `iex -S mix`.
+
+We will mostly interact with the `DependencyTracker` module to detect issues between a specification (our own rules)
+and a package definition (what gets parsed from Gemfile.lock or yarn.lock). Then we will use specific modules from each
+language in order to parse the package definition and create our specification. They are:
+
+- DependencyTracker.Ruby.PackageDefinition
+- DependencyTracker.Ruby.Specification
+- DependencyTracker.Javascript.PackageDefinition
+- DependencyTracker.Javascript.Specification
+
+Let's see this in action:
+
+#### Ruby
 
 ```elixir
 iex(1)> {:ok, package_definition} = DependencyTracker.Ruby.PackageDefinition.parse("test/fixtures/ruby/Gemfile.lock")
@@ -20,17 +32,40 @@ iex(1)> {:ok, package_definition} = DependencyTracker.Ruby.PackageDefinition.par
   #...
 }}
 
-iex(2)> specification = DependencyTracker.Specification.new(["aasm"], "https://acme.io/basic/gems/ruby/")
-%DependencyTracker.Specification{
-  rules: %{"aasm" => "https://acme.io/basic/gems/ruby/"}
+iex(2)> specification = DependencyTracker.Ruby.Specification.new(["aasm"], "https://acme.io/basic/gems/ruby/")
+%DependencyTracker.Ruby.Specification{
+  constraints: %{"aasm" => "https://acme.io/basic/gems/ruby/"}
 }
 
-iex(3)> DependencyTracker.issues(specification, package_definition)
+iex(3)> DependencyTracker.detect_ruby_issues(specification, package_definition)
 [
   %{
-    specification_url: "https://acme.io/basic/gems/ruby/",
+    expected_url: "https://acme.io/basic/gems/ruby/",
     dependency: "aasm",
-    package_definition_url: "https://rubygems.org/"
+    request_url: "https://rubygems.org/"
+  }
+]
+```
+
+#### Javascript
+
+```elixir
+iex(1)> {:ok, package_definition} = DependencyTracker.Javascript.PackageDefinition.parse("test/fixtures/javascript/yarn.lock")
+{:ok, %DependencyTracker.Javascript.PackageDefinition{
+  #...
+}}
+
+iex(2)> specification = DependencyTracker.Javascript.Specification.new("babel", ["yallist"])
+%DependencyTracker.Javascript.Specification{
+  constraints: %{"yallist" => "babel"}
+}
+
+iex(3)> DependencyTracker.detect_javascript_issues(specification, package_definition)
+[
+  %{
+    dependency: "yallist",
+    expected_org: "babel",
+    requested_org: "public_npm"
   }
 ]
 ```
