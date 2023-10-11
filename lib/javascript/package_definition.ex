@@ -55,7 +55,8 @@ defmodule DependencyTracker.Javascript.PackageDefinition do
         |> String.split("\n\n")
         |> Enum.reduce({:ok, %__MODULE__{orgs: %{}}}, fn block, {:ok, package_definition} ->
           case parse_string(block) do
-            {:ok, package} -> {:ok, merge(package, package_definition)}
+            {:ok, package} ->
+              {:ok, merge(package, package_definition)}
             {:error, reason} ->
               IO.puts("Error parsing yarn.lock block: #{reason}")
               {:ok, package_definition}
@@ -93,7 +94,7 @@ defmodule DependencyTracker.Javascript.PackageDefinition do
   end
 
   defp merge(%Package{ org: org } = package, %__MODULE__{orgs: orgs}) do
-    packages = Map.get(package, org, [])
+    packages = Map.get(orgs, org, [])
     %__MODULE__{orgs: Map.put(orgs, org, [package | packages])}
   end
 end
