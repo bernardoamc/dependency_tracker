@@ -1,7 +1,18 @@
 # DependencyTracker
 
-This is a small projec that aims to parse a Gemfile.lock and associate
-dependencies with a remote.
+This is a small project with the goal of identifying third party dependencies being loaded from an untrusted source. The process is split in three phases:
+
+**1. Identifying where dependencies are currently being loaded from:**
+
+The code will parse any given `Gemfile.lock` and `yarn.lock` files in order to build data structures based on the metadata from each file.
+
+**2. Provide a specification of where dependencies should be loaded from:**
+
+Right now this is a manual step. See examples in the `usage` section.
+
+**3. Run metadata fetched from lock files against specification:**
+
+If any dependencies are not respecting the specification they will be flagged.
 
 ## Setup
 
@@ -9,7 +20,6 @@ dependencies with a remote.
 2. Run `mix deps.get` in order to install dependencies
 
 ## Usage
-
 
 In order to experiment with the application load it with `iex -S mix`.
 
